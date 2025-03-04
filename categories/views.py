@@ -1,7 +1,8 @@
-from . import models, forms
+from . import models, forms, serializers
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from rest_framework import generics
 
 
 class CategoryListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
@@ -46,4 +47,14 @@ class CategoryDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView
     model = models.Category
     template_name = 'category_delete.html'
     success_url = reverse_lazy('category_list')
-    permission_required = 'categories.delete_category'    
+    permission_required = 'categories.delete_category'
+
+
+class CategoryCreateListAPIView(generics.ListCreateAPIView):
+    queryset = models.Category.objects.all()
+    serializer_class = serializers.CategorySerializer
+
+
+class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Category.objects.all()
+    serializer_class = serializers.CategorySerializer

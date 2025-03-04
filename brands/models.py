@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Brand(models.Model):
     name = models.CharField(max_length=100, verbose_name='Nome')
     description = models.TextField(null=True, blank=True, verbose_name='Descrição')

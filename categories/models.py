@@ -7,7 +7,7 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Criação')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Data de Atualização')
 
-    class Meta: 
+    class Meta:
         ordering = ['name']
 
     def __str__(self):

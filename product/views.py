@@ -1,10 +1,11 @@
-from . import models, forms
+from . import models, forms, serializers
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from categories.models import Category
 from brands.models import Brand
 from app import metrics
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from rest_framework import generics
 
 
 class ProductListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
@@ -24,13 +25,13 @@ class ProductListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         if title:
             queryset = queryset.filter(title__icontains=title)
 
-        if serie_number: 
+        if serie_number:
             queryset = queryset.filter(serie_number__icontains=serie_number)
 
-        if category: 
+        if category:
             queryset = queryset.filter(category_id=category)
 
-        if brand: 
+        if brand:
             queryset = queryset.filter(brand_id=brand)
         return queryset
 
@@ -69,3 +70,13 @@ class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
     template_name = 'product_delete.html'
     success_url = reverse_lazy('product_list')
     permission_required = 'product.delete_product'
+
+
+class ProductCreateListAPIView(generics.ListCreateAPIView):
+    queryset = models.Product.objects.all()
+    serializer_class = serializers.ProductSerializer
+
+
+class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Product.objects.all()
+    serializer_class = serializers.ProductSerializer
